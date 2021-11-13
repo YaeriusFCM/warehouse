@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/warehouse
-    username: warehouse
-    password: demo
+    url: jdbc:postgresql://ec2-54-74-95-84.eu-west-1.compute.amazonaws.com:5432/da7dqde96000d3
+    username: izomvnwukcwzsl
+    password: fd193e3748a3b82b29c3ba1a815a11d6e24e5c5f33359e132192a245618fa7b9
     driver-class-name: org.postgresql.Driver
   jpa.database: POSTGRESQL
