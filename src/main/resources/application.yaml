@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/warehouse
+    username: warehouse
+    password: demo
+    driver-class-name: org.postgresql.Driver
+  jpa.database: POSTGRESQL
