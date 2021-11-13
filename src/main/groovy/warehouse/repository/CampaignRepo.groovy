@@ -8,6 +8,6 @@ import warehouse.model.Campaign
 @Repository
 @Transactional
 interface CampaignRepo extends CrudRepository<Campaign, Long> {
-    Optional<Campaign> findDatasourceById(Long id)
-    Optional<Campaign> findDatasourceByName(String name)
+    Optional<Campaign> findById(Long id)
+    Optional<Campaign> findByName(String name)
 }

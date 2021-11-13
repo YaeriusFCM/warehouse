@@ -8,7 +8,7 @@ import javax.persistence.Id
 
 @Entity(name = 'campaign')
 class Campaign {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id long id
 
     @Column String name

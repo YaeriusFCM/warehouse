@@ -8,7 +8,7 @@ import javax.persistence.Id
 
 @Entity(name = 'datasource')
 class Datasource {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id long id
 
     @Column String name
