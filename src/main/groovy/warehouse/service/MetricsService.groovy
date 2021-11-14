@@ -9,6 +9,12 @@ import warehouse.repository.CampaignRepo
 import warehouse.repository.DailyMetricsRepo
 import warehouse.repository.DatasourceRepo
 
+/**
+ * @author p.dobrzanski@yaerius.eu
+ * Serice class used to fetch all data related to metrics
+ * Uses various repositories to grab data from particular db tables
+ */
+
 @Service
 class MetricsService {
 

@@ -9,8 +9,17 @@ import warehouse.model.DailyMetrics
 import warehouse.model.Datasource
 import warehouse.service.MetricsService
 
+/**
+ * @author p.dobrzanski@yaerius.eu
+ * Main controller processing all the http requests
+ * Uses MetricsService to fetch data
+ */
+
 @RestController
 class MainController {
+
+    static final String CSV_INPUT_FILE = 'src/main/resources/cropped.csv'
+    static final String CSV_DATE_FORMAT = 'MM/dd/yy'
 
     @Autowired
     MetricsService metricsService
@@ -31,10 +40,19 @@ class MainController {
 
     @GetMapping(value = "/generate")
     def generateData() {
+        // to save from double data import
+        def metricsCount = metricsService.countAllMetrics()
+        if (metricsCount > 0) {
+            return [
+                'message': "metrics already imported, skipping",
+                'metricsImported': metricsCount
+            ]
+        }
+
         def datasources = [:]
         def campaigns = [:]
 
-        def data = new CsvParser().parse(new FileReader('src/main/resources/cropped.csv'))
+        def data = new CsvParser().parse(new FileReader(CSV_INPUT_FILE))
 
         for (line in data) {
             if (!datasources.containsKey(line.Datasource)) {
@@ -59,7 +77,7 @@ class MainController {
             metricsService.saveMetrics(new DailyMetrics(
                 datasource: datasources.get(line.Datasource),
                 campaign: campaigns.get(line.Campaign),
-                date: Date.parse("MM/dd/yy", line.Daily),
+                date: Date.parse(CSV_DATE_FORMAT, line.Daily),
                 clicks: Integer.parseInt(line.Clicks),
                 impressions: Integer.parseInt(line.Impressions)
             ))
@@ -70,6 +88,11 @@ class MainController {
     @GetMapping(value = "/campaigns")
     def campaigns() {
         metricsService.getAllCampaigns()
+    }
+
+    @GetMapping(value = "/datasources")
+    def datasources() {
+        metricsService.getAllDatasources()
     }
 }
 
