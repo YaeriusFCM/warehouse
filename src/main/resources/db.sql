@@ -3,13 +3,13 @@ CREATE TABLE campaign(
     id bigserial,
     name varchar(64),
     CONSTRAINT campaign_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE datasource(
     id bigserial,
     name varchar(64),
     CONSTRAINT datasource_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE daily_metrics(
     id bigserial,
@@ -19,4 +19,4 @@ CREATE TABLE daily_metrics(
     clicks integer NOT NULL DEFAULT 0,
     impressions integer NOT NULL DEFAULT 0,
     CONSTRAINT daily_metrics_pkey PRIMARY KEY (id)
-)
+);

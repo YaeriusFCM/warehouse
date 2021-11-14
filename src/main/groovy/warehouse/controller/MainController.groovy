@@ -11,7 +11,7 @@ import warehouse.service.MetricsService
 
 /**
  * @author p.dobrzanski@yaerius.eu
- * Main controller processing all the http requests
+ * Main controller processing basic http requests
  * Uses MetricsService to fetch data
  */
 

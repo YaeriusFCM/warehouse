@@ -22,6 +22,8 @@ class MetricsService {
     @Autowired DatasourceRepo datasourceRepo
     @Autowired DailyMetricsRepo dailyMetricsRepo
 
+    /*** CAMPAIGNS ***/
+
     List<Campaign> getAllCampaigns() {
         campaignRepo.findAll()
     }
@@ -37,6 +39,8 @@ class MetricsService {
     Campaign saveCampaign(Campaign c) {
         campaignRepo.save(c)
     }
+
+    /*** DATASOURCES ***/
 
     List<Datasource> getAllDatasources() {
         datasourceRepo.findAll()
@@ -54,12 +58,23 @@ class MetricsService {
         datasourceRepo.count()
     }
 
+    /*** METRICS ***/
+
     DailyMetrics saveMetrics(DailyMetrics m) {
         dailyMetricsRepo.save(m)
     }
 
     long countAllMetrics() {
         dailyMetricsRepo.count()
+    }
+
+    def getTotalMetricsForCampaign(long campaignId, Date from = null, Date upto = null) {
+        if (from && upto) {
+            dailyMetricsRepo.getTotalMetricsForCampaignIdBetween(campaignId, from, upto)
+        }
+        else {
+            dailyMetricsRepo.getTotalMetricsForCampaignId(campaignId)
+        }
     }
 
 }
