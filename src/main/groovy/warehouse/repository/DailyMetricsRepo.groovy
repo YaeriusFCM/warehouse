@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import warehouse.model.DailyMetrics
 import warehouse.projection.CampaignTotalMetrics
+import warehouse.projection.DatasourceTotalMetrics
 
 @Repository
 @Transactional
@@ -29,4 +30,22 @@ interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
             GROUP BY c.name
         ''', nativeQuery = true)
     CampaignTotalMetrics getTotalMetricsForCampaignIdBetween(long campaignId, Date from, Date upto)
+
+    @Query(value = '''
+            SELECT d.name AS datasource, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions 
+            FROM daily_metrics m 
+            INNER JOIN datasource d ON m.datasource_id = d.id
+            WHERE d.id = ?1
+            GROUP BY d.name
+        ''', nativeQuery = true)
+    DatasourceTotalMetrics getTotalMetricsForDatasourceId(long datasourceId)
+
+    @Query(value = '''
+            SELECT d.name AS datasource, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions 
+            FROM daily_metrics m 
+            INNER JOIN datasource d ON m.datasource_id = d.id
+            WHERE d.id = ?1 AND m.date >= ?2 AND m.date <= ?3
+            GROUP BY d.name
+        ''', nativeQuery = true)
+    DatasourceTotalMetrics getTotalMetricsForDatasourceIdBetween(long datasourceId, Date from, Date upto)
 }

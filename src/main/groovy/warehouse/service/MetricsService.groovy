@@ -77,4 +77,13 @@ class MetricsService {
         }
     }
 
+    def getTotalMetricsForDatasource(long datasourceId, Date from = null, Date upto = null) {
+        if (from && upto) {
+            dailyMetricsRepo.getTotalMetricsForDatasourceIdBetween(datasourceId, from, upto)
+        }
+        else {
+            dailyMetricsRepo.getTotalMetricsForDatasourceId(datasourceId)
+        }
+    }
+
 }
