@@ -28,6 +28,10 @@ class MetricsService {
         campaignRepo.findAll()
     }
 
+    List<Campaign> getCampaignsLike(String search) {
+        campaignRepo.findByNameContainingIgnoreCase(search)
+    }
+
     Optional<Campaign> getCampaignByName(String name) {
         campaignRepo.findByName(name)
     }
@@ -44,6 +48,10 @@ class MetricsService {
 
     List<Datasource> getAllDatasources() {
         datasourceRepo.findAll()
+    }
+
+    List<Campaign> getDatasourcesLike(String search) {
+        datasourceRepo.findByNameContainingIgnoreCase(search)
     }
 
     Optional<Datasource> getDatasourceByName(String name) {

@@ -10,4 +10,5 @@ import warehouse.model.Datasource
 interface DatasourceRepo extends CrudRepository<Datasource, Long> {
     Optional<Datasource> findById(Long id)
     Optional<Datasource> findByName(String name)
+    List<Datasource> findByNameContainingIgnoreCase(String name)
 }

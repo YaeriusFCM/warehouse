@@ -3,6 +3,7 @@ package warehouse.controller
 import com.xlson.groovycsv.CsvParser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import warehouse.model.Campaign
 import warehouse.model.DailyMetrics
@@ -90,9 +91,19 @@ class MainController {
         metricsService.getAllCampaigns()
     }
 
+    @GetMapping(value = "/campaigns/{search}")
+    def campaignsLike(@PathVariable String search) {
+        metricsService.getCampaignsLike(search)
+    }
+
     @GetMapping(value = "/datasources")
     def datasources() {
         metricsService.getAllDatasources()
+    }
+
+    @GetMapping(value = "/datasources/{search}")
+    def datasourcesLike(@PathVariable String search) {
+        metricsService.getDatasourcesLike(search)
     }
 }
 

@@ -10,4 +10,5 @@ import warehouse.model.Campaign
 interface CampaignRepo extends CrudRepository<Campaign, Long> {
     Optional<Campaign> findById(Long id)
     Optional<Campaign> findByName(String name)
+    List<Campaign> findByNameContainingIgnoreCase(String name)
 }
