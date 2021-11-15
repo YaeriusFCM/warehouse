@@ -4,4 +4,5 @@ interface DatasourceTotalMetrics {
     String getDatasource()
     int getClicks()
     int getImpressions()
+    double getCtr()
 }

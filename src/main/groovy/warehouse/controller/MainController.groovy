@@ -29,8 +29,8 @@ class MainController {
         "hello"
     }
 
-    @GetMapping(value = "/info")
-    def info() {
+    @GetMapping(value = "/count")
+    def count() {
         [
             'datasources': metricsService.countAllDatasources(),
             'campaigns': metricsService.countAllCampaigns(),
@@ -38,8 +38,8 @@ class MainController {
         ]
     }
 
-    @GetMapping(value = "/generate")
-    def generateData() {
+    @GetMapping(value = "/import")
+    def importData() {
         // to save from double data import
         def metricsCount = metricsService.countAllMetrics()
         if (metricsCount > 0) {

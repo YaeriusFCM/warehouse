@@ -14,7 +14,8 @@ interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
     Optional<DailyMetrics> findById(Long id)
 
     @Query(value = '''
-            SELECT c.name AS campaign, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions 
+            SELECT c.name AS campaign, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions,
+                   100.0*SUM(m.clicks)/SUM(m.impressions) AS ctr
             FROM daily_metrics m 
             INNER JOIN campaign c ON m.campaign_id = c.id
             WHERE c.id = ?1
@@ -23,7 +24,8 @@ interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
     CampaignTotalMetrics getTotalMetricsForCampaignId(long campaignId)
 
     @Query(value = '''
-            SELECT c.name AS campaign, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions 
+            SELECT c.name AS campaign, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions,
+                   100.0*SUM(m.clicks)/SUM(m.impressions) AS ctr
             FROM daily_metrics m 
             INNER JOIN campaign c ON m.campaign_id = c.id
             WHERE c.id = ?1 AND m.date >= ?2 AND m.date <= ?3
@@ -32,7 +34,8 @@ interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
     CampaignTotalMetrics getTotalMetricsForCampaignIdBetween(long campaignId, Date from, Date upto)
 
     @Query(value = '''
-            SELECT d.name AS datasource, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions 
+            SELECT d.name AS datasource, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions,
+                   100.0*SUM(m.clicks)/SUM(m.impressions) AS ctr
             FROM daily_metrics m 
             INNER JOIN datasource d ON m.datasource_id = d.id
             WHERE d.id = ?1
@@ -41,7 +44,8 @@ interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
     DatasourceTotalMetrics getTotalMetricsForDatasourceId(long datasourceId)
 
     @Query(value = '''
-            SELECT d.name AS datasource, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions 
+            SELECT d.name AS datasource, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions,
+                   100.0*SUM(m.clicks)/SUM(m.impressions) AS ctr
             FROM daily_metrics m 
             INNER JOIN datasource d ON m.datasource_id = d.id
             WHERE d.id = ?1 AND m.date >= ?2 AND m.date <= ?3
