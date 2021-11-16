@@ -5,3 +5,5 @@ spring:
     password: fd193e3748a3b82b29c3ba1a815a11d6e24e5c5f33359e132192a245618fa7b9
     driver-class-name: org.postgresql.Driver
   jpa.database: POSTGRESQL
+
+csv-input-file: src/main/resources/cropped.csv

@@ -22,34 +22,61 @@ class MetricsController {
     @Autowired
     MetricsService metricsService
 
+    @GetMapping(value = "/cpmetricsovertime/{campaignId}")
+    def campaignMetricsOverTime(@PathVariable Long campaignId) {
+        metricsOverTime(Campaign, campaignId)
+    }
+
+    @GetMapping(value = "/cpmetricsovertime/{campaignId}/{strFrom}/{strUpto}")
+    def campaignMetricsOverTimeBetween(@PathVariable Long campaignId, @PathVariable String strFrom, @PathVariable String strUpto) {
+        metricsOverTime(Campaign, campaignId, strFrom, strUpto)
+    }
+
     @GetMapping(value = "/cpmetrics/{campaignId}")
     def campaignMetrics(@PathVariable Long campaignId) {
-        metrics(Campaign, campaignId)
+        metricsTotal(Campaign, campaignId)
     }
 
     @GetMapping(value = "/cpmetrics/{campaignId}/{strFrom}/{strUpto}")
     def campaignMetricsBetween(@PathVariable Long campaignId, @PathVariable String strFrom, @PathVariable String strUpto) {
-        metrics(Campaign, campaignId, strFrom, strUpto)
+        metricsTotal(Campaign, campaignId, strFrom, strUpto)
+    }
+
+    @GetMapping(value = "/dsmetricsovertime/{datasourceId}")
+    def datasourceMetricsOverTime(@PathVariable Long datasourceId) {
+        metricsOverTime(Datasource, datasourceId)
+    }
+
+    @GetMapping(value = "/dsmetricsovertime/{datasourceId}/{strFrom}/{strUpto}")
+    def datasourceMetricsOverTimeBetween(@PathVariable Long datasourceId, @PathVariable String strFrom, @PathVariable String strUpto) {
+        metricsOverTime(Datasource, datasourceId, strFrom, strUpto)
     }
 
     @GetMapping(value = "/dsmetrics/{datasourceId}")
     def datasourceMetrics(@PathVariable Long datasourceId) {
-        metrics(Datasource, datasourceId)
+        metricsTotal(Datasource, datasourceId)
     }
 
     @GetMapping(value = "/dsmetrics/{datasourceId}/{strFrom}/{strUpto}")
     def datasourceMetricsBetween(@PathVariable Long datasourceId, @PathVariable String strFrom, @PathVariable String strUpto) {
-        metrics(Datasource, datasourceId, strFrom, strUpto)
+        metricsTotal(Datasource, datasourceId, strFrom, strUpto)
     }
 
     /**
-     * Generic metrics method to avoid code duplication
+     * Generic metrics methods to avoid code duplication
      */
-    def metrics(Class clazz, Long id, String strFrom = null, String strUpto = null) {
+    def metricsTotal(Class clazz, Long id, String strFrom = null, String strUpto = null) {
         Date from = strFrom ? Date.parse(URL_DATE_FORMAT, strFrom) : null
         Date upto = strUpto ? Date.parse(URL_DATE_FORMAT, strUpto) : null
 
         metricsService."getTotalMetricsFor$clazz.simpleName"(id, from, upto)
+    }
+
+    def metricsOverTime(Class clazz, Long id, String strFrom = null, String strUpto = null) {
+        Date from = strFrom ? Date.parse(URL_DATE_FORMAT, strFrom) : null
+        Date upto = strUpto ? Date.parse(URL_DATE_FORMAT, strUpto) : null
+
+        metricsService."getMetricsOverTimeFor$clazz.simpleName"(id, from, upto)
     }
 }
 

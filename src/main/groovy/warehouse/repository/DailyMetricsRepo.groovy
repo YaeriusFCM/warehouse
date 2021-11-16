@@ -13,6 +13,11 @@ import warehouse.projection.DatasourceTotalMetrics
 interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
     Optional<DailyMetrics> findById(Long id)
 
+    List<DailyMetrics> findByCampaignId(Long campaignId)
+    List<DailyMetrics> findByCampaignIdAndDateBetween(Long campaignId, Date from, Date upto)
+    List<DailyMetrics> findByDatasourceId(Long datasourceId)
+    List<DailyMetrics> findByDatasourceIdAndDateBetween(Long datasourceId, Date from, Date upto)
+
     @Query(value = '''
             SELECT c.name AS campaign, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions,
                    100.0*SUM(m.clicks)/SUM(m.impressions) AS ctr
@@ -28,10 +33,10 @@ interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
                    100.0*SUM(m.clicks)/SUM(m.impressions) AS ctr
             FROM daily_metrics m 
             INNER JOIN campaign c ON m.campaign_id = c.id
-            WHERE c.id = ?1 AND m.date >= ?2 AND m.date <= ?3
+            WHERE c.id = ?1 AND m.date >= ?2 AND m.date < ?3
             GROUP BY c.name
         ''', nativeQuery = true)
-    CampaignTotalMetrics getTotalMetricsForCampaignIdBetween(long campaignId, Date from, Date upto)
+    CampaignTotalMetrics getTotalMetricsForCampaignIdAndDateBetween(long campaignId, Date from, Date upto)
 
     @Query(value = '''
             SELECT d.name AS datasource, SUM(m.clicks) AS clicks, SUM(m.impressions) AS impressions,
@@ -48,8 +53,8 @@ interface DailyMetricsRepo extends CrudRepository<DailyMetrics, Long> {
                    100.0*SUM(m.clicks)/SUM(m.impressions) AS ctr
             FROM daily_metrics m 
             INNER JOIN datasource d ON m.datasource_id = d.id
-            WHERE d.id = ?1 AND m.date >= ?2 AND m.date <= ?3
+            WHERE d.id = ?1 AND m.date >= ?2 AND m.date < ?3
             GROUP BY d.name
         ''', nativeQuery = true)
-    DatasourceTotalMetrics getTotalMetricsForDatasourceIdBetween(long datasourceId, Date from, Date upto)
+    DatasourceTotalMetrics getTotalMetricsForDatasourceIdAndDateBetween(long datasourceId, Date from, Date upto)
 }

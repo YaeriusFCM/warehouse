@@ -3,6 +3,7 @@ package warehouse.tool
 /**
  * @author p.dobrzanski@yaerius.eu
  * Class used as a utility tool
+ * Normally I would create a separated script for this, but this time I wanted to include it in the project
  * I had to reduce the number of entries below 10k, because of limitations of my free cloud DB instance
  */
 

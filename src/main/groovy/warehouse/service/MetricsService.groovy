@@ -76,18 +76,38 @@ class MetricsService {
         dailyMetricsRepo.count()
     }
 
+    def getMetricsOverTimeForCampaign(long campaignId, Date from = null, Date upto = null) {
+        if (from && upto) {
+            dailyMetricsRepo.findByCampaignIdAndDateBetween(campaignId, from, upto)
+        }
+        else {
+            dailyMetricsRepo.findByCampaignId(campaignId)
+        }
+
+    }
+
     def getTotalMetricsForCampaign(long campaignId, Date from = null, Date upto = null) {
         if (from && upto) {
-            dailyMetricsRepo.getTotalMetricsForCampaignIdBetween(campaignId, from, upto)
+            dailyMetricsRepo.getTotalMetricsForCampaignIdAndDateBetween(campaignId, from, upto)
         }
         else {
             dailyMetricsRepo.getTotalMetricsForCampaignId(campaignId)
         }
     }
 
+    def getMetricsOverTimeForDatasource(long datasourceId, Date from = null, Date upto = null) {
+        if (from && upto) {
+            dailyMetricsRepo.findByDatasourceIdAndDateBetween(datasourceId, from, upto)
+        }
+        else {
+            dailyMetricsRepo.findByDatasourceId(datasourceId)
+        }
+
+    }
+
     def getTotalMetricsForDatasource(long datasourceId, Date from = null, Date upto = null) {
         if (from && upto) {
-            dailyMetricsRepo.getTotalMetricsForDatasourceIdBetween(datasourceId, from, upto)
+            dailyMetricsRepo.getTotalMetricsForDatasourceIdAndDateBetween(datasourceId, from, upto)
         }
         else {
             dailyMetricsRepo.getTotalMetricsForDatasourceId(datasourceId)
