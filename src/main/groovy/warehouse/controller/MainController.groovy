@@ -73,32 +73,21 @@ class MainController {
             ]
         }
 
-        def datasources = [:]
-        def campaigns = [:]
+        def datasources = metricsService.getAllDatasourcesAssoc()
+        def campaigns = metricsService.getAllCampaignsAssoc()
+        def metrics = []
 
         def data = new CsvParser().parse(new FileReader(CSV_INPUT_FILE))
 
         for (line in data) {
             if (!datasources.containsKey(line.Datasource)) {
-                def datasource = metricsService.getDatasourceByName(line.Datasource)
-                if (datasource.isPresent()) {
-                    datasources.put(datasource.get().name, datasource.get())
-                }
-                else {
-                    datasources.put(line.Datasource, metricsService.saveDatasource(new Datasource(name: line.Datasource)))
-                }
+                datasources.put(line.Datasource, metricsService.saveDatasource(new Datasource(name: line.Datasource)))
             }
             if (!campaigns.containsKey(line.Campaign)) {
-                def campaign = metricsService.getCampaignByName(line.Campaign)
-                if (campaign.isPresent()) {
-                    campaigns.put(campaign.get().name, campaign.get())
-                }
-                else {
-                    campaigns.put(line.Campaign, metricsService.saveCampaign(new Campaign(name: line.Campaign)))
-                }
+                campaigns.put(line.Campaign, metricsService.saveCampaign(new Campaign(name: line.Campaign)))
             }
 
-            metricsService.saveMetrics(new DailyMetrics(
+            metrics.add(new DailyMetrics(
                 datasource: datasources.get(line.Datasource),
                 campaign: campaigns.get(line.Campaign),
                 date: Date.parse(CSV_DATE_FORMAT, line.Daily),
@@ -106,6 +95,9 @@ class MainController {
                 impressions: Integer.parseInt(line.Impressions)
             ))
         }
+
+        metricsService.saveAllMetrics(metrics)
+
         ['metricsImported': metricsService.countAllMetrics()]
     }
 

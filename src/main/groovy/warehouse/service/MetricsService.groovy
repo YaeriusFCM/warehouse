@@ -28,6 +28,14 @@ class MetricsService {
         campaignRepo.findAll()
     }
 
+    Map<String,Campaign> getAllCampaignsAssoc() {
+        def assoc = [:]
+        allCampaigns.each {c ->
+            assoc.put(c.name, c)
+        }
+        assoc
+    }
+
     List<Campaign> getCampaignsLike(String search) {
         campaignRepo.findByNameContainingIgnoreCase(search)
     }
@@ -50,6 +58,14 @@ class MetricsService {
         datasourceRepo.findAll()
     }
 
+    Map<String,Datasource> getAllDatasourcesAssoc() {
+        def assoc = [:]
+        allDatasources.each {ds ->
+            assoc.put(ds.name, ds)
+        }
+        assoc
+    }
+
     List<Campaign> getDatasourcesLike(String search) {
         datasourceRepo.findByNameContainingIgnoreCase(search)
     }
@@ -70,6 +86,10 @@ class MetricsService {
 
     DailyMetrics saveMetrics(DailyMetrics m) {
         dailyMetricsRepo.save(m)
+    }
+
+    List<DailyMetrics> saveAllMetrics(List<DailyMetrics> dmList) {
+        dailyMetricsRepo.saveAll(dmList)
     }
 
     long countAllMetrics() {
